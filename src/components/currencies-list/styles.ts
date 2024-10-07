@@ -30,12 +30,9 @@ export const EmptyState = styled.h6`
 	margin-top: 24px;
 `;
 
-export const Wrapper = styled.div`
+export const ScrollTopButton = styled(FaAngleUp)`
 	display: block;
 	opacity: 0.4;
-`;
-
-export const ScrollTopButton = styled(FaAngleUp)`
 	bottom: 10px;
 	cursor: pointer;
 	display: block;

@@ -10,7 +10,6 @@ import {
 	ListWrapper,
 	Scrollbar,
 	ScrollTopButton,
-	Wrapper,
 } from './styles';
 import { useFetchAllRates } from '../../hooks/useFetchAllRates';
 import { CurrencyConvertedValueSkeleton } from '../skeletons/currency-converted-value-skeleton';
@@ -120,8 +119,7 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 					<Scrollbar
 						role="list"
 						onScroll={handleInfiniteLoading}
-						ref={listInnerRef}
-					>
+						ref={listInnerRef}>
 						{supportedCurrencies
 							.slice(0, page * itemsPerPage)
 							.map((currency, index) => {
@@ -142,12 +140,10 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 							})}
 						{!isListFull && <CurrencyConvertedValueSkeleton />}
 						{showScrollTop && (
-							<Wrapper>
-								<ScrollTopButton
-									aria-label="Scroll to top"
-									onClick={scrollToTop}
-								/>
-							</Wrapper>
+							<ScrollTopButton
+								aria-label="Scroll to top"
+								onClick={scrollToTop}
+							/>
 						)}
 					</Scrollbar>
 				</ListWrapper>
