@@ -2,76 +2,37 @@ import styled from 'styled-components';
 
 export const FooterStyled = styled.footer`
 	display: flex;
-	justify-content: center;
-	width: 100%;
+	flex-direction: column;
+	width: 80%;
 
-	.main-footer {
-		width: 80%;
+	@media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+		display: block;
+	}
+`;
+
+export const QuickLinksContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid #e4eaf2;
+	padding-top: 60px;
+	justify-content: space-between;
+	margin-block-start: 3em;
+	padding-bottom: 60px;
+
+	ul li {
+		padding: 6px 0;
+		list-style-type: none;
 	}
 
-	.footer-details {
-		display: grid;
-		grid-template-columns: auto auto;
-		padding-bottom: 48px;
-		align-items: center;
-		justify-content: space-between;
-
-		.uphold-details {
-			font-size: 11px;
-			font-weight: 500;
-			color: #68788d;
-
-			div {
-				height: 24px;
-			}
-
-			p {
-				height: 24px;
-			}
-
-			ul {
-				display: flex;
-				flex: 1;
-				list-style-type: none;
-				padding-inline-start: 0;
-			}
-		}
+	.uphold-footer-logo img {
+		height: 40px;
+		width: 85px;
 	}
 
-	.footer {
-		border-top: 1px solid #e4eaf2;
-		padding-top: 60px;
+	@media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
 		display: grid;
 		grid-template-columns: repeat(6, 1fr);
 		grid-column-gap: 30px;
-		justify-content: space-between;
-		margin-block-start: 3em;
-		padding-bottom: 60px;
-
-		ul li {
-			padding: 6px 0;
-			list-style-type: none;
-		}
-
-		.uphold-footer-logo img {
-			height: 40px;
-			width: 85px;
-		}
-
-		.apps {
-			flex-direction: row;
-			text-align: right;
-			a {
-				padding: 0 16px;
-
-				& img {
-					transition: transform 0.5s;
-					&:hover {
-						transform: scale(1.25);
-					}
-				}
-			}
-		}
 	}
 `;
 
@@ -84,13 +45,6 @@ export const Container = styled.div`
 	justify-content: space-between;
 	margin-block-start: 3em;
 	padding-bottom: 60px;
-`;
-
-export const FooterDetails = styled.aside`
-	display: grid;
-	grid-template-columns: auto auto;
-	padding-bottom: 48px;
-	align-items: center;
 `;
 
 export const UpholdLogo = styled.img`
@@ -106,9 +60,24 @@ export const FooterHeader = styled.h6`
 `;
 
 export const DropwdownStoresContainer = styled.div`
-	align-items: end;
 	display: flex;
 	flex-direction: column;
+	width: 120px;
+
+	a {
+		padding: 0 16px;
+
+		& img {
+			transition: transform 0.5s;
+			&:hover {
+				transform: scale(1.25);
+			}
+		}
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+		text-align: right;
+	}
 `;
 
 export const AppStoresWrapper = styled.div`
@@ -125,10 +94,6 @@ export const LanguagesContainer = styled.select`
 	margin-top: 8px;
 	padding: 4px 12px;
 	border-color: #e4eaf2;
-`;
-
-export const UpholdDetailsItem = styled.li`
-	margin-right: 24px;
 `;
 
 export const StyledAnchor = styled.a`

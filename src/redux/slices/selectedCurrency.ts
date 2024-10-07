@@ -1,9 +1,9 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { SupportedCurrency } from './supportedCurrencies';
+import { Currency } from './supportedCurrencies';
 
 export type SelectedCurrencyState = {
-	currency: SupportedCurrency;
+	currency: Currency;
 };
 
 const initialState: SelectedCurrencyState = {
@@ -22,17 +22,14 @@ const initialState: SelectedCurrencyState = {
 		status: 'open',
 		symbol: '$',
 		type: 'fiat',
-	} as SupportedCurrency,
+	} as Currency,
 };
 
 export const selectedCurrencySlice = createSlice({
 	name: 'selectedCurrency',
 	initialState,
 	reducers: {
-		setSelectedCurrency: (
-			currency,
-			action: PayloadAction<SupportedCurrency>
-		) => {
+		setSelectedCurrency: (currency, action: PayloadAction<Currency>) => {
 			currency.currency = action.payload;
 		},
 	},

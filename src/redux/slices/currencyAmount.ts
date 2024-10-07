@@ -16,9 +16,13 @@ export const currencyAmountSlice = createSlice({
 		setCurrencyAmount: (amount, action: PayloadAction<number>) => {
 			amount.value = action.payload;
 		},
+		resetCurrencyAmount(state) {
+			state.value = 0;
+		},
 	},
 });
 
-export const { setCurrencyAmount } = currencyAmountSlice.actions;
+export const { setCurrencyAmount, resetCurrencyAmount } =
+	currencyAmountSlice.actions;
 
 export default currencyAmountSlice.reducer;

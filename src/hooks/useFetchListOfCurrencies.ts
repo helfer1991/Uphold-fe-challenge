@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSupportedCurrencies } from '../redux/slices/supportedCurrencies';
-import type { SupportedCurrency } from '../redux/slices/supportedCurrencies';
+import type { Currency } from '../redux/slices/supportedCurrencies';
 
 const PAGE_SIZE = 150;
 
 export const useFetchListOfCurrencies = () => {
-	const [listOfCurrencies, setListOfCurrencies] = useState<SupportedCurrency[]>(
-		[]
-	);
+	const [listOfCurrencies, setListOfCurrencies] = useState<Currency[]>([]);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const fetchSupportedCurrencies = async () => {
-			const fullData: SupportedCurrency[] = [];
+			const fullData: Currency[] = [];
 			let lastAmountOfCurrencies = PAGE_SIZE,
 				index = 0;
 
@@ -31,7 +29,8 @@ export const useFetchListOfCurrencies = () => {
 					fullData.push(...data);
 					lastAmountOfCurrencies = data.length;
 					index++;
-				} catch (e) {
+				} catch (error) {
+					console.error('Error fetching exchange rates:', error);
 					break;
 				}
 			}

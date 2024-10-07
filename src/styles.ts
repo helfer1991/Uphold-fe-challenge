@@ -30,7 +30,7 @@ export const Subtitle = styled.h4`
 	color: #8494a5;
 	font-weight: 400;
 
-	@media (min-width: 1024px) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.desktop}) {
 		width: 66.666667%;
 	}
 `;

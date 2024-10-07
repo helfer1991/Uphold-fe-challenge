@@ -1,7 +1,7 @@
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../../../mocks/mock-store';
 import { USDMock, mockSupportedCurrencies } from '../../../mocks/mocks';
-import type { SupportedCurrency } from '../../../redux/slices/supportedCurrencies';
+import type { Currency } from '../../../redux/slices/supportedCurrencies';
 import { CurrencyInputAmount } from '../currency-input-amount';
 
 describe('CurrencyInputAmount', () => {
@@ -11,10 +11,10 @@ describe('CurrencyInputAmount', () => {
 				selectedCurrency: {
 					currency: mockSupportedCurrencies.find(
 						({ code }) => code === 'USD'
-					) as SupportedCurrency,
+					) as Currency,
 				},
 				supportedCurrencies: {
-					currencies: mockSupportedCurrencies as SupportedCurrency[],
+					currencies: mockSupportedCurrencies as Currency[],
 				},
 				exchangeRates: { rates: { USD: USDMock } },
 			},
@@ -33,10 +33,10 @@ describe('CurrencyInputAmount', () => {
 				selectedCurrency: {
 					currency: mockSupportedCurrencies.find(
 						({ code }) => code === 'USD'
-					) as SupportedCurrency,
+					) as Currency,
 				},
 				supportedCurrencies: {
-					currencies: mockSupportedCurrencies as SupportedCurrency[],
+					currencies: mockSupportedCurrencies as Currency[],
 				},
 				exchangeRates: { rates: { USD: USDMock } },
 			},
@@ -51,18 +51,16 @@ describe('CurrencyInputAmount', () => {
 
 	it('handles the input debounce correctly', async () => {
 		jest.useFakeTimers();
-		const mockSetCurrencyAmount = jest.fn();
-		const mockSetIsLoading = jest.fn();
 
 		renderWithProviders(<CurrencyInputAmount />, {
 			preloadedState: {
 				selectedCurrency: {
 					currency: mockSupportedCurrencies.find(
 						({ code }) => code === 'USD'
-					) as SupportedCurrency,
+					) as Currency,
 				},
 				supportedCurrencies: {
-					currencies: mockSupportedCurrencies as SupportedCurrency[],
+					currencies: mockSupportedCurrencies as Currency[],
 				},
 				exchangeRates: { rates: { USD: USDMock } },
 			},

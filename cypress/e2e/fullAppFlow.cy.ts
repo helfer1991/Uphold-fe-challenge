@@ -4,38 +4,37 @@ import {
 	USDMock,
 	mockSupportedCurrencies,
 } from '../../src/mocks/mocks';
+
 describe('E2E', () => {
-	// and assign an alias
 	it('Completes the full aplication flow', () => {
 		cy.intercept(
 			{
-				method: 'GET', // Route all GET requests
-				url: 'http://api-sandbox.uphold.com/v0/ticker/USD', // that have a URL that matches '/users/*'
+				method: 'GET',
+				url: 'http://api-sandbox.uphold.com/v0/ticker/USD',
 			},
-			USDMock // and force the response to be: []
+			USDMock
 		).as('getUSDRates');
 		cy.intercept(
 			{
-				method: 'GET', // Route all GET requests
-				url: 'http://api-sandbox.uphold.com/v0/ticker/BTC', // that have a URL that matches '/users/*'
+				method: 'GET',
+				url: 'http://api-sandbox.uphold.com/v0/ticker/BTC',
 			},
-			BTCMock // and force the response to be: []
+			BTCMock
 		).as('getBTCRates');
 		cy.intercept(
 			{ url: 'http://api-sandbox.uphold.com/**', middleware: true },
 			(req) => {
 				req.on('response', (res) => {
-					// Wait for delay in milliseconds before sending the response to the client.
 					res.setDelay(1000);
 				});
 			}
 		);
 		cy.intercept(
 			{
-				method: 'GET', // Route all GET requests
-				url: '/v0/assets', // that have a URL that matches '/users/*'
+				method: 'GET',
+				url: '/v0/assets',
 			},
-			mockSupportedCurrencies // and force the response to be: []
+			mockSupportedCurrencies
 		).as('getSupportedCurrencies');
 
 		cy.visit('http://localhost:3000/');
@@ -50,9 +49,7 @@ describe('E2E', () => {
 
 		cy.get('[data-testid="BAT-conversion"]').contains(1000);
 		cy.get('input').clear().type('10');
-		//same value because of debounce
 		cy.get('[data-testid="BAT-conversion"]').contains(1000);
-		//after debounce
 		cy.get('[data-testid="BAT-conversion"]').contains(100);
 	});
 });

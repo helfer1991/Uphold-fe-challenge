@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../mocks/mock-store';
 import { USDMock, mockSupportedCurrencies } from '../../../mocks/mocks';
-import type { SupportedCurrency } from '../../../redux/slices/supportedCurrencies';
+import type { Currency } from '../../../redux/slices/supportedCurrencies';
 import { CurrencyConvertedValue } from '../currency-converted-value';
 
 describe('CurrencyConvertedValue', () => {
@@ -16,11 +16,11 @@ describe('CurrencyConvertedValue', () => {
 					selectedCurrency: {
 						currency: mockSupportedCurrencies.find(
 							({ code }) => code === 'USD'
-						) as SupportedCurrency,
+						) as Currency,
 					},
 					currencyAmount: { value: 10 },
 					supportedCurrencies: {
-						currencies: mockSupportedCurrencies as SupportedCurrency[],
+						currencies: mockSupportedCurrencies as Currency[],
 					},
 				},
 			}

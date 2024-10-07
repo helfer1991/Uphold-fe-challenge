@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setExchangeRates } from '../redux/slices/exchangeRate';
 import { sdk } from '../utils/sdk';
-import type { SupportedCurrency } from '../redux/slices/supportedCurrencies';
+import type { Currency } from '../redux/slices/supportedCurrencies';
 
-export const useFetchAllRates = (
-	selectedCurrency: SupportedCurrency | null
-) => {
+export const useFetchAllRates = (selectedCurrency: Currency | null) => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isError, setIsError] = useState<boolean>(false);
 	const dispatch = useDispatch();
 
 	const fetchRates = async (currencyCode: string) => {
@@ -20,6 +19,8 @@ export const useFetchAllRates = (
 				})
 			);
 		} catch (error) {
+			console.error('Error fetching exchange rates:', error);
+			setIsError(true);
 		} finally {
 			setIsLoading(false);
 		}
@@ -31,5 +32,5 @@ export const useFetchAllRates = (
 		}
 	}, [selectedCurrency]);
 
-	return { isLoading };
+	return { isLoading, isError };
 };

@@ -1,15 +1,22 @@
 import { ChangeEvent, useEffect, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { setCurrencyAmount } from '../../redux/slices/currencyAmount';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	setCurrencyAmount,
+	resetCurrencyAmount,
+} from '../../redux/slices/currencyAmount';
 import { CurrencyTickerPicker } from '../currency-ticker-picker/currency-ticker-picker';
 import { debounce } from 'lodash';
 import { Container, InputAmount } from './styles';
+import type { RootState } from '../../redux/store';
 
 const DEBOUNCE_TIME = 500;
 
 export const CurrencyInputAmount = () => {
 	const [inputAmount, setInputAmount] = useState<string>('');
 	const dispatch = useDispatch();
+	const currencyAmount = useSelector(
+		(state: RootState) => state.currencyAmount.value
+	);
 
 	const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setInputAmount(e.target.value);
@@ -28,6 +35,12 @@ export const CurrencyInputAmount = () => {
 			debouncedSetCurrencyAmount.cancel();
 		};
 	}, [inputAmount, debouncedSetCurrencyAmount]);
+
+	useEffect(() => {
+		if (currencyAmount === 0) {
+			setInputAmount('');
+		}
+	}, [currencyAmount]);
 
 	return (
 		<Container>

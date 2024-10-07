@@ -2,9 +2,9 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function (app) {
 	app.use(
-		'/v0', // Specify the base URL where your API requests should be directed
+		'/v0',
 		createProxyMiddleware({
-			target: 'https://api-sandbox.uphold.com', // Specify the target API server
+			target: 'https://api-sandbox.uphold.com',
 			changeOrigin: true,
 			// pathRewrite: false,
 		})

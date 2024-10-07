@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedCurrency } from '../../../redux/slices/selectedCurrency';
+import { resetCurrencyAmount } from '../../../redux/slices/currencyAmount';
 import { RootState } from '../../../redux/store';
 import { CurrencyImage } from '../../currency-image';
-import type { SupportedCurrency } from '../../../redux/slices/supportedCurrencies';
+import type { Currency } from '../../../redux/slices/supportedCurrencies';
 import {
 	DropdownMenu,
 	ScrollbarContainer,
@@ -29,8 +30,9 @@ export const CurrencyDropdown: React.FC<CurrencyDropdown> = ({
 
 	const dispatch = useDispatch();
 
-	const handleSelect = (currency: SupportedCurrency) => {
+	const handleSelect = (currency: Currency) => {
 		dispatch(setSelectedCurrency(currency));
+		dispatch(resetCurrencyAmount());
 		setIsOpen(false);
 	};
 
@@ -39,8 +41,7 @@ export const CurrencyDropdown: React.FC<CurrencyDropdown> = ({
 			ref={currenciesListDropdownRef}
 			role="menu"
 			aria-orientation="vertical"
-			aria-labelledby="options-menu"
-		>
+			aria-labelledby="options-menu">
 			<ScrollbarContainer>
 				{supportedCurrencies
 					.filter((currency) => currency.code !== selectedCurrency.code)
@@ -49,8 +50,7 @@ export const CurrencyDropdown: React.FC<CurrencyDropdown> = ({
 							data-testid={`${currency.code}-selector`}
 							key={`${currency.code}-${index}`}
 							role="menuitem"
-							onClick={() => handleSelect(currency)}
-						>
+							onClick={() => handleSelect(currency)}>
 							<CurrencyImage src={currency.image} />
 							<CurrencyCode>{currency.code}</CurrencyCode>
 						</DropdownItem>

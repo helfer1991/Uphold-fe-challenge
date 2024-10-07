@@ -4,8 +4,8 @@ export const DropdownMenu = styled.div`
 	background-color: white;
 	border-radius: 0.5rem;
 	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-	height: 210px;
-	margin-top: 0.25rem;
+	height: 300px;
+	margin-top: 0.75rem;
 	overflow: auto;
 	position: absolute;
 	right: 0;

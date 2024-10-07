@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../mocks/mock-store';
 import { mockSupportedCurrencies } from '../../../mocks/mocks';
-import type { SupportedCurrency } from '../../../redux/slices/supportedCurrencies';
+import type { Currency } from '../../../redux/slices/supportedCurrencies';
 import { CurrencyTickerPicker } from '../currency-ticker-picker';
 
 it('Should show USD by default', () => {
@@ -10,10 +10,10 @@ it('Should show USD by default', () => {
 			selectedCurrency: {
 				currency: mockSupportedCurrencies.find(
 					({ code }) => code === 'USD'
-				) as SupportedCurrency,
+				) as Currency,
 			},
 			supportedCurrencies: {
-				currencies: mockSupportedCurrencies as SupportedCurrency[],
+				currencies: mockSupportedCurrencies as Currency[],
 			},
 		},
 	});

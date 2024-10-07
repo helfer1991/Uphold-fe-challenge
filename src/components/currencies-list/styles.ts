@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FaAngleUp } from 'react-icons/fa';
 
 export const Container = styled.div`
 	align-items: center;
@@ -12,6 +13,7 @@ export const ListWrapper = styled.div`
 	height: 80vh;
 	overflow: auto;
 	width: 100%;
+	position: relative;
 `;
 
 export const Scrollbar = styled.div`
@@ -26,4 +28,21 @@ export const EmptyState = styled.h6`
 	color: #8494a5;
 	font-size: 24px;
 	margin-top: 24px;
+`;
+
+export const Wrapper = styled.div`
+	display: block;
+	opacity: 0.4;
+`;
+
+export const ScrollTopButton = styled(FaAngleUp)`
+	bottom: 10px;
+	cursor: pointer;
+	display: block;
+	height: 30px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 30px;
+	z-index: 10;
 `;

@@ -1,30 +1,33 @@
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
-	padding: 3rem;
-	width: 100%;
-`;
-
-export const GridContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	display: flex;
 	gap: 1rem;
 	text-align: center;
 	justify-content: center;
+	flex-wrap: wrap;
+	padding: 3rem;
+
+	@media (min-width: 576px) {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		width: 100%;
+	}
 `;
 
 export const NavigationLinksContainer = styled.div`
-	display: none;
+	order: 2;
 	justify-content: center;
 	align-items: center;
-
-	@media (min-width: 1024px) {
-		display: flex;
-	}
 	grid-column: span 1;
 
 	a + a {
 		margin-left: 3rem;
+	}
+
+	@media (min-width: 576px) {
+		display: flex;
+		order: 1;
 	}
 `;
 
