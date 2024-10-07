@@ -47,7 +47,8 @@ Most of the criterias were met for this challenge
 - Unit tested the components with jest and React Testing Library, although partially due to time constraints. Main functionality tested through Cypress;
 - CORS is handled with http-proxy-middleware;
 - Pagination handled with infinite loading (supportedCurrencies);
-- Supported Currencies are being loaded dynamically with a direct call to the Uphold API (no sdk method);
+- Back to top button (small arrow pointing upwards) when scrolling down through the converted amount in several currencies;
+- Supported currencies are being loaded dynamically with a direct call to the Uphold API (no sdk method);
 - Loading state only appears for currencies that are not cached already;
 - Responsive design;
 - Styled-Components for CSS, as that's the tool I'm mostly used to work with. Although I recognized that when it comes to performance CSS-In-JS is not as good as pure CSS, I like its syntax and it's fine for small projects;
