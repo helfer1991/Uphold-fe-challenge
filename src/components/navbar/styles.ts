@@ -42,8 +42,9 @@ export const LogoContainer = styled.div`
 	align-items: center;
 	grid-column: span 2;
 
-	@media (min-width: 1024px) {
+	@media (min-width: 576px) {
 		grid-column: span 1;
+		order: 2;
 	}
 `;
 
@@ -51,6 +52,10 @@ export const LoginButtonContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media (min-width: 576px) {
+		order: 2;
+	}
 `;
 
 export const LoginButton = styled.button`

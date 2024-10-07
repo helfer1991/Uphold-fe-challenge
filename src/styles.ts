@@ -17,20 +17,24 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-	font-size: 2.25rem;
+	font-size: 1.5rem;
 	color: black;
 	text-align: center;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+		font-size: 2.25rem;
+	}
 `;
 
 export const Subtitle = styled.h4`
 	margin-top: 2.5rem;
-	font-size: 1.25rem;
+	font-size: 1rem;
 	width: 100%;
 	text-align: center;
 	color: #8494a5;
 	font-weight: 400;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.desktop}) {
-		width: 66.666667%;
+	@media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+		font-size: 1.25rem;
 	}
 `;

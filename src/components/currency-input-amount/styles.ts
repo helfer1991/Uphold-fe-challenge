@@ -11,9 +11,13 @@ export const Container = styled.div`
 
 export const InputAmount = styled.input`
 	border: none;
-	font-size: 3rem;
+	font-size: 2rem;
 	background-color: transparent;
 	outline: none;
 	appearance: none;
 	width: 66.666667%;
+
+	@media (min-width: 576px) {
+		font-size: 3;
+	}
 `;
