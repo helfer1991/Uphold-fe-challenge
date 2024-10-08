@@ -5,11 +5,15 @@ import type { Currency } from '../redux/slices/supportedCurrencies';
 
 const PAGE_SIZE = 150;
 
-export const useFetchListOfCurrencies = () => {
+export const useFetchListOfCurrencies = (shouldFetch: boolean) => {
 	const [listOfCurrencies, setListOfCurrencies] = useState<Currency[]>([]);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		if (!shouldFetch) {
+			return;
+		}
+
 		const fetchSupportedCurrencies = async () => {
 			const fullData: Currency[] = [];
 			let lastAmountOfCurrencies = PAGE_SIZE,
@@ -40,7 +44,7 @@ export const useFetchListOfCurrencies = () => {
 		};
 
 		fetchSupportedCurrencies();
-	}, [dispatch]);
+	}, [dispatch, shouldFetch]);
 
 	return listOfCurrencies;
 };

@@ -13,6 +13,7 @@ import {
 } from './styles';
 import { useFetchAllRates } from '../../hooks/useFetchAllRates';
 import { CurrencyConvertedValueSkeleton } from '../skeletons/currency-converted-value-skeleton';
+import { getCurrencyRate } from '../../utils/getCurrencyRate';
 
 type CurrenciesListProps = {
 	itemsPerPage: number;
@@ -21,18 +22,6 @@ type CurrenciesListProps = {
 const INFINITE_SCROLL_SENSITIVITY_FACTOR = 15;
 const THROTTLE_DELAY = 250;
 const SHOW_SCROLL_TOP_THRESHOLD = 500;
-
-const getCurrencyRate = (
-	currency: Currency,
-	selectedCurrency: Currency,
-	conversionRates: ExchangeRate[]
-) => {
-	const exchangePair = [
-		`${currency.code}-${selectedCurrency.code}`,
-		`${currency.code}${selectedCurrency.code}`,
-	];
-	return conversionRates?.find((rate) => exchangePair.includes(rate.pair));
-};
 
 export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 	itemsPerPage,
@@ -85,6 +74,14 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 				windowScrollY > SHOW_SCROLL_TOP_THRESHOLD
 		);
 	};
+
+	useEffect(() => {
+		return () => {
+			if (handleInfiniteLoading.timer) {
+				clearTimeout(handleInfiniteLoading.timer);
+			}
+		};
+	}, []);
 
 	handleInfiniteLoading.timer = 0 as unknown as NodeJS.Timeout;
 

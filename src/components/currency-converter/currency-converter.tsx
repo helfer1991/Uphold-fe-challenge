@@ -9,26 +9,6 @@ import { InputWrapper } from './styles';
 import { useFetchListOfCurrencies } from '../../hooks/useFetchListOfCurrencies';
 
 export const CurrencyConverter: React.FC = () => {
-	const listOfCurrencies = useFetchListOfCurrencies();
-	const selectedCurrency = useSelector(
-		(state: RootState) => state.selectedCurrency.currency
-	);
-	const supportedCurrencies = useSelector(
-		(state: RootState) => state.supportedCurrencies.currencies
-	);
-	const dispatch = useDispatch();
-
-	const getRates = () => {
-		if (supportedCurrencies.length === 0) {
-			const currencies: Currency[] = listOfCurrencies;
-			dispatch(setSupportedCurrencies(currencies));
-		}
-	};
-
-	useEffect(() => {
-		getRates();
-	}, [selectedCurrency]);
-
 	return (
 		<InputWrapper>
 			<CurrencyInputAmount />
