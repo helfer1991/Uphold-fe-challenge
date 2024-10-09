@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import type { Currency } from '../../redux/slices/supportedCurrencies';
-import type { ExchangeRate } from '../../redux/slices/exchangeRate';
 import { RootState } from '../../redux/store';
 import { CurrencyConvertedValue } from '../currency-converted-value';
 import {
@@ -24,6 +22,7 @@ export const CurrenciesList: React.FC = () => {
 	const [page, setPage] = useState<number>(1);
 	const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
 	const listInnerRef = useRef<HTMLDivElement>(null);
+	const timerRef = useRef<NodeJS.Timeout>();
 
 	const supportedCurrencies = useSelector(
 		(state: RootState) => state.supportedCurrencies.currencies
@@ -32,6 +31,7 @@ export const CurrenciesList: React.FC = () => {
 	const currencyAmount = useSelector(
 		(state: RootState) => state.currencyAmount.value
 	);
+
 	const selectedCurrency = useSelector(
 		(state: RootState) => state.selectedCurrency.currency
 	);
@@ -46,39 +46,40 @@ export const CurrenciesList: React.FC = () => {
 		setPage(1);
 	}, [selectedCurrency]);
 
-	const handleInfiniteLoading = (e: React.UIEvent<HTMLDivElement>) => {
-		const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
-		const windowScrollY = window.scrollY || window.pageYOffset;
+	const handleInfiniteLoading = useCallback(
+		(e: React.UIEvent<HTMLDivElement>) => {
+			const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
+			const windowScrollY = window.scrollY || window.pageYOffset;
 
-		if (handleInfiniteLoading.timer) {
-			clearTimeout(handleInfiniteLoading.timer);
-		}
-
-		handleInfiniteLoading.timer = setTimeout(() => {
-			const bottom =
-				scrollHeight - scrollTop - clientHeight <
-				INFINITE_SCROLL_SENSITIVITY_FACTOR;
-
-			if (bottom) {
-				setPage((prev) => prev + 1);
+			if (timerRef.current) {
+				clearTimeout(timerRef.current);
 			}
-		}, THROTTLE_DELAY);
 
-		setShowScrollTop(
-			scrollTop > SHOW_SCROLL_TOP_THRESHOLD ||
-				windowScrollY > SHOW_SCROLL_TOP_THRESHOLD
-		);
-	};
+			timerRef.current = setTimeout(() => {
+				const bottom =
+					scrollHeight - scrollTop - clientHeight <
+					INFINITE_SCROLL_SENSITIVITY_FACTOR;
+
+				if (bottom) {
+					setPage((prev) => prev + 1);
+				}
+			}, THROTTLE_DELAY);
+
+			setShowScrollTop(
+				scrollTop > SHOW_SCROLL_TOP_THRESHOLD ||
+					windowScrollY > SHOW_SCROLL_TOP_THRESHOLD
+			);
+		},
+		[]
+	);
 
 	useEffect(() => {
 		return () => {
-			if (handleInfiniteLoading.timer) {
-				clearTimeout(handleInfiniteLoading.timer);
+			if (timerRef.current) {
+				clearTimeout(timerRef.current);
 			}
 		};
 	}, []);
-
-	handleInfiniteLoading.timer = 0 as unknown as NodeJS.Timeout;
 
 	const scrollToTop = () => {
 		listInnerRef.current?.scrollTo({

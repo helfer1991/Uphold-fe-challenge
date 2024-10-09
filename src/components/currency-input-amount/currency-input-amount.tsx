@@ -16,13 +16,14 @@ const MIN_INPUT_LENGTH = 1;
 export const CurrencyInputAmount: React.FC = () => {
 	const [inputAmount, setInputAmount] = useState<string>('');
 	const shouldFetch = inputAmount.length >= MIN_INPUT_LENGTH;
-	useFetchListOfCurrencies(shouldFetch);
+	const { isError } = useFetchListOfCurrencies(shouldFetch);
 	const dispatch = useDispatch();
 	const currencyAmount = useSelector(
 		(state: RootState) => state.currencyAmount.value
 	);
 
 	const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
 		setInputAmount(e.target.value);
 	};
 
@@ -45,6 +46,10 @@ export const CurrencyInputAmount: React.FC = () => {
 			setInputAmount('');
 		}
 	}, [currencyAmount]);
+
+	if (isError) {
+		return <p>Some error occurred, please try again</p>;
+	}
 
 	return (
 		<Container>
