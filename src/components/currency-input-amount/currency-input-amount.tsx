@@ -13,7 +13,7 @@ import { useFetchListOfCurrencies } from '../../hooks/useFetchListOfCurrencies';
 const DEBOUNCE_TIME = 500;
 const MIN_INPUT_LENGTH = 1;
 
-export const CurrencyInputAmount = () => {
+export const CurrencyInputAmount: React.FC = () => {
 	const [inputAmount, setInputAmount] = useState<string>('');
 	const shouldFetch = inputAmount.length >= MIN_INPUT_LENGTH;
 	useFetchListOfCurrencies(shouldFetch);

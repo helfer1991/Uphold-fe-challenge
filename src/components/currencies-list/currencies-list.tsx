@@ -15,17 +15,12 @@ import { useFetchAllRates } from '../../hooks/useFetchAllRates';
 import { CurrencyConvertedValueSkeleton } from '../skeletons/currency-converted-value-skeleton';
 import { getCurrencyRate } from '../../utils/getCurrencyRate';
 
-type CurrenciesListProps = {
-	itemsPerPage: number;
-};
-
 const INFINITE_SCROLL_SENSITIVITY_FACTOR = 15;
 const THROTTLE_DELAY = 250;
 const SHOW_SCROLL_TOP_THRESHOLD = 500;
+const ITEMS_PER_PAGE = 30;
 
-export const CurrenciesList: React.FC<CurrenciesListProps> = ({
-	itemsPerPage,
-}) => {
+export const CurrenciesList: React.FC = () => {
 	const [page, setPage] = useState<number>(1);
 	const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
 	const listInnerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +92,7 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 	};
 
 	const isListFull = useMemo(
-		() => page * itemsPerPage > supportedCurrencies.length,
+		() => page * ITEMS_PER_PAGE > supportedCurrencies.length,
 		[page]
 	);
 
@@ -118,7 +113,7 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 						onScroll={handleInfiniteLoading}
 						ref={listInnerRef}>
 						{supportedCurrencies
-							.slice(0, page * itemsPerPage)
+							.slice(0, page * ITEMS_PER_PAGE)
 							.map((currency, index) => {
 								const rate = getCurrencyRate(
 									currency,
