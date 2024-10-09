@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import type { Currency } from '../../redux/slices/supportedCurrencies';
-import type { ExchangeRate } from '../../redux/slices/exchangeRate';
 import { RootState } from '../../redux/store';
 import { CurrencyConvertedValue } from '../currency-converted-value';
 import {
@@ -13,33 +11,18 @@ import {
 } from './styles';
 import { useFetchAllRates } from '../../hooks/useFetchAllRates';
 import { CurrencyConvertedValueSkeleton } from '../skeletons/currency-converted-value-skeleton';
-
-type CurrenciesListProps = {
-	itemsPerPage: number;
-};
+import { getCurrencyRate } from '../../utils/getCurrencyRate';
 
 const INFINITE_SCROLL_SENSITIVITY_FACTOR = 15;
 const THROTTLE_DELAY = 250;
 const SHOW_SCROLL_TOP_THRESHOLD = 500;
+const ITEMS_PER_PAGE = 30;
 
-const getCurrencyRate = (
-	currency: Currency,
-	selectedCurrency: Currency,
-	conversionRates: ExchangeRate[]
-) => {
-	const exchangePair = [
-		`${currency.code}-${selectedCurrency.code}`,
-		`${currency.code}${selectedCurrency.code}`,
-	];
-	return conversionRates?.find((rate) => exchangePair.includes(rate.pair));
-};
-
-export const CurrenciesList: React.FC<CurrenciesListProps> = ({
-	itemsPerPage,
-}) => {
+export const CurrenciesList: React.FC = () => {
 	const [page, setPage] = useState<number>(1);
 	const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
 	const listInnerRef = useRef<HTMLDivElement>(null);
+	const timerRef = useRef<NodeJS.Timeout>();
 
 	const supportedCurrencies = useSelector(
 		(state: RootState) => state.supportedCurrencies.currencies
@@ -48,6 +31,7 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 	const currencyAmount = useSelector(
 		(state: RootState) => state.currencyAmount.value
 	);
+
 	const selectedCurrency = useSelector(
 		(state: RootState) => state.selectedCurrency.currency
 	);
@@ -62,31 +46,40 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 		setPage(1);
 	}, [selectedCurrency]);
 
-	const handleInfiniteLoading = (e: React.UIEvent<HTMLDivElement>) => {
-		const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
-		const windowScrollY = window.scrollY || window.pageYOffset;
+	const handleInfiniteLoading = useCallback(
+		(e: React.UIEvent<HTMLDivElement>) => {
+			const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
+			const windowScrollY = window.scrollY || window.pageYOffset;
 
-		if (handleInfiniteLoading.timer) {
-			clearTimeout(handleInfiniteLoading.timer);
-		}
-
-		handleInfiniteLoading.timer = setTimeout(() => {
-			const bottom =
-				scrollHeight - scrollTop - clientHeight <
-				INFINITE_SCROLL_SENSITIVITY_FACTOR;
-
-			if (bottom) {
-				setPage((prev) => prev + 1);
+			if (timerRef.current) {
+				clearTimeout(timerRef.current);
 			}
-		}, THROTTLE_DELAY);
 
-		setShowScrollTop(
-			scrollTop > SHOW_SCROLL_TOP_THRESHOLD ||
-				windowScrollY > SHOW_SCROLL_TOP_THRESHOLD
-		);
-	};
+			timerRef.current = setTimeout(() => {
+				const bottom =
+					scrollHeight - scrollTop - clientHeight <
+					INFINITE_SCROLL_SENSITIVITY_FACTOR;
 
-	handleInfiniteLoading.timer = 0 as unknown as NodeJS.Timeout;
+				if (bottom) {
+					setPage((prev) => prev + 1);
+				}
+			}, THROTTLE_DELAY);
+
+			setShowScrollTop(
+				scrollTop > SHOW_SCROLL_TOP_THRESHOLD ||
+					windowScrollY > SHOW_SCROLL_TOP_THRESHOLD
+			);
+		},
+		[]
+	);
+
+	useEffect(() => {
+		return () => {
+			if (timerRef.current) {
+				clearTimeout(timerRef.current);
+			}
+		};
+	}, []);
 
 	const scrollToTop = () => {
 		listInnerRef.current?.scrollTo({
@@ -100,7 +93,7 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 	};
 
 	const isListFull = useMemo(
-		() => page * itemsPerPage > supportedCurrencies.length,
+		() => page * ITEMS_PER_PAGE > supportedCurrencies.length,
 		[page]
 	);
 
@@ -121,7 +114,7 @@ export const CurrenciesList: React.FC<CurrenciesListProps> = ({
 						onScroll={handleInfiniteLoading}
 						ref={listInnerRef}>
 						{supportedCurrencies
-							.slice(0, page * itemsPerPage)
+							.slice(0, page * ITEMS_PER_PAGE)
 							.map((currency, index) => {
 								const rate = getCurrencyRate(
 									currency,

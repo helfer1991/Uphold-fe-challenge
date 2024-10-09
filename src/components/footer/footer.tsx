@@ -104,15 +104,13 @@ export const Footer: React.FC = () => (
 					<UpholdDetailsAnchor
 						target="_blank"
 						rel="noopener noreferrer"
-						href="https://apps.apple.com/us/app/uphold-buy-digital-currencies/id1101145849"
-					>
+						href="https://apps.apple.com/us/app/uphold-buy-digital-currencies/id1101145849">
 						<img alt="" loading="lazy" src="/assets/appstore.svg" />
 					</UpholdDetailsAnchor>
 					<UpholdDetailsAnchor
 						target="_blank"
 						rel="noopener noreferrer"
-						href="https://play.google.com/store/apps/details?id=com.uphold.wallet"
-					>
+						href="https://play.google.com/store/apps/details?id=com.uphold.wallet">
 						<img alt="" src="/assets/playstore.svg" />
 					</UpholdDetailsAnchor>
 				</AppStoresWrapper>

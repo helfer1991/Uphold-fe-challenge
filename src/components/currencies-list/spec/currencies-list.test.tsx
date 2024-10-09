@@ -5,7 +5,7 @@ import { USDMock, mockSupportedCurrencies } from '../../../mocks/mocks';
 import { CurrenciesList } from '../currencies-list';
 
 it('Should render the list of currencies', () => {
-	renderWithProviders(<CurrenciesList itemsPerPage={100} />, {
+	renderWithProviders(<CurrenciesList />, {
 		preloadedState: {
 			supportedCurrencies: { currencies: mockSupportedCurrencies },
 			currencyAmount: { value: 10 },

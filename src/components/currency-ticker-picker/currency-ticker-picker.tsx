@@ -6,7 +6,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Container, StyledButton, CurrencyCode } from './styles';
 import { CurrencyDropdown } from './currency-dropdown';
 
-export const CurrencyTickerPicker = () => {
+export const CurrencyTickerPicker: React.FC = () => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const selectedCurrency = useSelector(
@@ -46,8 +46,7 @@ export const CurrencyTickerPicker = () => {
 				role="button"
 				aria-haspopup="true"
 				aria-expanded={isOpen}
-				onClick={toggleDropdown}
-			>
+				onClick={toggleDropdown}>
 				<CurrencyImage src={selectedCurrency.image} />
 				<CurrencyCode>{selectedCurrency.code}</CurrencyCode>
 				{isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}

@@ -8,17 +8,22 @@ import { CurrencyTickerPicker } from '../currency-ticker-picker/currency-ticker-
 import { debounce } from 'lodash';
 import { Container, InputAmount } from './styles';
 import type { RootState } from '../../redux/store';
+import { useFetchListOfCurrencies } from '../../hooks/useFetchListOfCurrencies';
 
 const DEBOUNCE_TIME = 500;
+const MIN_INPUT_LENGTH = 1;
 
-export const CurrencyInputAmount = () => {
+export const CurrencyInputAmount: React.FC = () => {
 	const [inputAmount, setInputAmount] = useState<string>('');
+	const shouldFetch = inputAmount.length >= MIN_INPUT_LENGTH;
+	const { isError } = useFetchListOfCurrencies(shouldFetch);
 	const dispatch = useDispatch();
 	const currencyAmount = useSelector(
 		(state: RootState) => state.currencyAmount.value
 	);
 
 	const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+		e.preventDefault();
 		setInputAmount(e.target.value);
 	};
 
@@ -41,6 +46,10 @@ export const CurrencyInputAmount = () => {
 			setInputAmount('');
 		}
 	}, [currencyAmount]);
+
+	if (isError) {
+		return <p>Some error occurred, please try again</p>;
+	}
 
 	return (
 		<Container>
